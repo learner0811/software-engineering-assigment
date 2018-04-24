@@ -29,6 +29,7 @@ public class AddMenuFrm extends javax.swing.JFrame implements WindowListener{
     
     public AddMenuFrm() {
         initComponents();
+        mySetting();
     }
     
     public static AddMenuFrm getInstance(){
@@ -66,8 +67,17 @@ public class AddMenuFrm extends javax.swing.JFrame implements WindowListener{
         
         
         //calculate the total money
-        for (Mon a : listDish)
-            totalMoney += a.getGia();
+        if (txtTotalMoney.getText().equals("")){
+            JOptionPane.showMessageDialog(this, "Tong tien trong", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        try{
+            totalMoney = Double.parseDouble(txtTotalMoney.getText());
+        } catch (NumberFormatException ex){
+            JOptionPane.showMessageDialog(this, "Tong tien khong hop le", "Warning", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
         
         //encap object
         menu.setTen(name);
@@ -82,7 +92,7 @@ public class AddMenuFrm extends javax.swing.JFrame implements WindowListener{
             return;
         }
             
-        
+        JOptionPane.showMessageDialog(this, "Luu thanh cong");
     }
     private void btnNewDishClicked(){
         addDishFrm = AddDishFrm.getInstace();
@@ -359,7 +369,9 @@ public class AddMenuFrm extends javax.swing.JFrame implements WindowListener{
     public void windowClosing(WindowEvent we) {
         int confirm = JOptionPane.showConfirmDialog(null, "Ban co muon thoat");
         if (confirm == JOptionPane.YES_OPTION){
-            addDishFrm.dispose();
+            if (addDishFrm != null){
+                addDishFrm.dispose();
+            }
             this.dispose();
             addMenuFrm = null;
         }
